@@ -1,4 +1,4 @@
-#python3 im2vid.py --root_path /media/data3/EgoCentric_Nafosted/val/
+#python3 im2vid.py --root_path /media/data3/EgoCentric_Nafosted/non_skip/train/
 import os
 import glob
 import cv2
@@ -7,7 +7,7 @@ import argparse
 
 def get_parser():
     parser = argparse.ArgumentParser(description="im2vid")
-    parser.add_argument("--root_path", help="Root path")
+    parser.add_argument("--root_path", type=str, default="/media/data3/EgoCentric_Nafosted/non_skip/train/", help="Root path")
     return parser
 
 def main():
@@ -25,10 +25,7 @@ def main():
         )
  
         for filename in sorted(glob.glob(os.path.join(args.root_path, directory) + '/*.png')):
-            print(filename)
             im = cv2.imread(filename)
-            cv2.imshow('im', im)
-            #print(im.shape)
             output_file.write(im)
         output_file.release()
     return 0
