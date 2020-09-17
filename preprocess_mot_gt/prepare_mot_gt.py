@@ -11,13 +11,13 @@ def get_parser():
     parser.add_argument(
         "--root_path",
         type=str,
-        default="/media/data3/EgoCentric_Nafosted/mot/gt/",
+        default="/media/data3/EgoCentric_Nafosted/micand26/gt/",
         help="Path to groundtruth folder that contains SEQUENCE_X with via_export_json.json",
     )
     parser.add_argument(
         "--seq_name_path",
         type=str,
-        default="/media/data3/EgoCentric_Nafosted/mot/seqmaps/Sequence.txt",
+        default="/media/data3/EgoCentric_Nafosted/micand26/seqmaps/Sequence.txt",
         help="Sequence.txt write all sequences name, this helps pymot reconginze seqs",
     )
     return parser
@@ -44,21 +44,18 @@ def make_gt(path2gt_of_seq, json_file):
     for idx, v in enumerate(imgs_anns.values()):
         #print(v["filename"])
         annos = v["regions"]
-        trackID = 1
         for anno in annos:
             region_attributes = anno["region_attributes"]
-            category_id = int(region_attributes["category_id"])
-            if category_id == 1:
-                anno = anno["shape_attributes"]
-                px = anno["all_points_x"]
-                py = anno["all_points_y"]
-                top = np.min(px)
-                left = np.min(py)
-                width = np.max(px)-np.min(px)
-                height = np.max(py)-np.min(py)
-                line = [idx+1, trackID, top, left, width, height, 1, 1, 1]
-                f.write(",".join(str(item) for item in line) + "\n")
-            trackID = trackID + 1
+            trackID = int(region_attributes["category_id"])
+            anno = anno["shape_attributes"]
+            px = anno["all_points_x"]
+            py = anno["all_points_y"]
+            top = np.min(px)
+            left = np.min(py)
+            width = np.max(px)-np.min(px)
+            height = np.max(py)-np.min(py)
+            line = [idx+1, trackID, top, left, width, height, 1, 1, 1]
+            f.write(",".join(str(item) for item in line) + "\n")
     return 0
 
 def main():
