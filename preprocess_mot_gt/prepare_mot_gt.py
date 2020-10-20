@@ -11,13 +11,13 @@ def get_parser():
     parser.add_argument(
         "--root_path",
         type=str,
-        default="/media/data3/EgoCentric_Nafosted/micand26/gt/",
+        default="/media/data3/EgoCentric_Nafosted/micand30/gt/",
         help="Path to groundtruth folder that contains SEQUENCE_X with via_export_json.json",
     )
     parser.add_argument(
         "--seq_name_path",
         type=str,
-        default="/media/data3/EgoCentric_Nafosted/micand26/seqmaps/Sequence.txt",
+        default="/media/data3/EgoCentric_Nafosted/micand30/seqmaps/Sequence.txt",
         help="Sequence.txt write all sequences name, this helps pymot reconginze seqs",
     )
     return parser
@@ -75,6 +75,19 @@ def main():
             os.mkdir(path2gt_of_seq)
         json_file = os.path.join(path2directory, "via_export_json.json")
         make_gt(path2gt_of_seq, json_file)
+
+        '''
+        #extract frames
+        vid = cv2.VideoCapture(os.path.join(path2directory, directory+'.avi'))
+        num_frames = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))    
+        for i in range(num_frames):
+            hasFrame, frame = vid.read()
+            if hasFrame:
+                name_frame = str(i).zfill(4) + ".png"
+                path_frame = os.path.join(path2directory, name_frame)
+                cv2.imwrite(path_frame, frame)
+        '''
+
     return 0
 
 if __name__=='__main__':
