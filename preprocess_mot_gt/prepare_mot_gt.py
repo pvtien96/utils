@@ -66,6 +66,17 @@ def main():
     for directory in directories:
         print(directory)
         path2directory = os.path.join(args.root_path, directory)
+        
+        #extract frames
+        vid = cv2.VideoCapture(os.path.join(path2directory, directory+'.avi'))
+        num_frames = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))    
+        for i in range(num_frames):
+            hasFrame, frame = vid.read()
+            if hasFrame:
+                name_frame = str(i).zfill(len(str(num_frames))) + ".png"
+                path_frame = os.path.join(path2directory, name_frame)
+                cv2.imwrite(path_frame, frame)
+
         #make seqinfo.ini
         make_seqinfo(path2directory, directory)
 
@@ -75,18 +86,6 @@ def main():
             os.mkdir(path2gt_of_seq)
         json_file = os.path.join(path2directory, "via_export_json.json")
         make_gt(path2gt_of_seq, json_file)
-
-        '''
-        #extract frames
-        vid = cv2.VideoCapture(os.path.join(path2directory, directory+'.avi'))
-        num_frames = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))    
-        for i in range(num_frames):
-            hasFrame, frame = vid.read()
-            if hasFrame:
-                name_frame = str(i).zfill(4) + ".png"
-                path_frame = os.path.join(path2directory, name_frame)
-                cv2.imwrite(path_frame, frame)
-        '''
 
     return 0
 
